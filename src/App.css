@@ -1,7 +1,31 @@
+body{
+  display: flex;
+flex-direction: column; 
+justify-content: center;
+align-items: center;
+ background-color: rgb(15, 12, 46);
+ color: rgb(15, 12, 46);
+}
 .App {
   text-align: center;
 }
 
+.myDiv {
+  display: flex;
+  
+  border-radius: 5px;
+  background-color: rgb(189, 184, 184);
+  flex-direction: column;
+  justify-content: center;
+align-items: center;
+
+}
+.tasks{  display: grid;
+  grid-template-columns: 300px 300px 300px 300px;
+  column-gap: 10px;
+  row-gap: 5px;}
+  .space{  height: 100px;}
+  
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -13,20 +37,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
 
 @keyframes App-logo-spin {
   from {
