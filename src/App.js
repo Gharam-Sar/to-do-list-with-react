@@ -141,14 +141,33 @@ function AddTask() {
 }
 function SearchBar() {
   const [filterText, setFilterText] = useState("");
-
+  
   return (
     <div className="componant" aria-roledescription="search">
       <input
+                      onChange={(e) => searching=true}
+
         type="search"
         className="searchBar"
         placeholder="Search for a task"
       />
+    </div>
+  );
+}
+function Footer() {
+  let storedtodo = JSON.parse(localStorage.getItem("todo"));
+ let num_todo=storedtodo.length;
+let done=0;
+let notDone=0;
+for (let i=0;i<storedtodo.length;i++){
+  if(storedtodo[i].done) done++;
+  else notDone++;
+}
+  return (
+    <div style={{color:'white',
+    fontSize:'20px'}} className="componant" >
+     Number of to dos in the list= {num_todo} ----  Number of done to dos= {done} ---- Number of to be done to dos= {notDone} 
+     
     </div>
   );
 }
@@ -166,9 +185,11 @@ export default function MyApp() {
         <SearchBar />
       </div>
       <hr></hr>
-      <Tasks />
+      <div >    <Tasks /></div>
+  
       {/* {searching : <SearchTasks/> ?<Tasks/> }  */}
       <hr></hr>
+<Footer></Footer>
     </div>
   );
 }
