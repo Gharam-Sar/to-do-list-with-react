@@ -66,7 +66,7 @@ height: 25px;
 }
 .tasks{  display: grid;
   grid-template-columns: 300px 300px 300px 300px;
-  
+  grid-auto-rows: 260px;
   column-gap: 10px;
   row-gap: 5px;
 
@@ -74,6 +74,17 @@ height: 25px;
 
   .space{  height: 100px;}
   
+ .searchBar {
+    background-image: url('./imgs/search.png'); 
+    background-position: 10px 12px; 
+    background-repeat: no-repeat; 
+    width: 70%; 
+    height: 10%;
+    font-size: 15px; 
+    padding: 12px 20px 12px 40px; 
+    border: 1px solid #ddd; 
+    margin-bottom: 12px; 
+  }
 .App-logo {
   height: 40vmin;
   pointer-events: none;
