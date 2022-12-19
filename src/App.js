@@ -15,8 +15,6 @@ window.onload = (event) => {
 };
 
 function ToDo({ todo }) {
- 
-
   return (
     <div className="myDiv" key={todo.id}>
       <h2>Task number: {todo.id}</h2>
@@ -68,32 +66,27 @@ function ToDo({ todo }) {
     </div>
   );
 }
-function Tasks() {
-  let displaytodo = JSON.parse(localStorage.getItem("todo"));
-
+function Tasks({ displaytodo }) {
+  const [filterText, setFilterText] = useState("");
+  const [toggle, settoggle] = useState(false);
+  if (toggle) displaytodo = [];
   return (
-    <div className="tasks">
-      {displaytodo.map((todo) => {
-        return <ToDo todo={todo} />;
-      })}
+    <div>
+      <SearchBar
+        filterText={filterText}
+        toggle={toggle}
+        onFilterTextChange={setFilterText}
+        ontoggleChange={settoggle}
+      />
+
+      <div className="tasks">
+        {displaytodo.map((todo) => {
+          return <ToDo todo={todo} />;
+        })}
+      </div>
     </div>
   );
 }
-
-// function SearchTasks() {
-
-//   return (
-//     <div className = "tasks">
-//     {displaytodo.map(todo => {
-//       return (
-//         <ToDo
-// todo=        {todo}
-//       />
-//       );
-//     })}
-//   </div>
-//   );
-// }
 
 function AddTask() {
   const [newtask, settask] = useState("");
@@ -139,39 +132,47 @@ function AddTask() {
     </div>
   );
 }
-function SearchBar() {
-  const [filterText, setFilterText] = useState("");
-  
+function SearchBar({ filterText, toggle, onFilterTextChange, ontoggleChange }) {
   return (
-    <div className="componant" aria-roledescription="search">
-      <input
-                      onChange={(e) => searching=true}
-
-        type="search"
-        className="searchBar"
-        placeholder="Search for a task"
-      />
+    <div>
+      <div className="componant" aria-roledescription="search">
+        <input
+          onChange={(e) => onFilterTextChange(e.target.value)}
+          type="search"
+          className="searchBar"
+          placeholder="Search for a task"
+        />
+      </div>
+      <label>
+        <input
+          type="checkbox"
+          checked={toggle}
+          onChange={(e) => ontoggleChange(e.target.checked)}
+        />{" "}
+        check to hide to dos
+      </label>
     </div>
   );
 }
 function Footer() {
   let storedtodo = JSON.parse(localStorage.getItem("todo"));
- let num_todo=storedtodo.length;
-let done=0;
-let notDone=0;
-for (let i=0;i<storedtodo.length;i++){
-  if(storedtodo[i].done) done++;
-  else notDone++;
-}
+  let num_todo = storedtodo.length;
+  let done = 0;
+  let notDone = 0;
+  for (let i = 0; i < storedtodo.length; i++) {
+    if (storedtodo[i].done) done++;
+    else notDone++;
+  }
   return (
-    <div style={{color:'white',
-    fontSize:'20px'}} className="componant" >
-     Number of to dos in the list= {num_todo} ----  Number of done to dos= {done} ---- Number of to be done to dos= {notDone} 
-     
+    <div style={{ color: "white", fontSize: "20px" }} className="componant">
+      Number of to dos in the list= {num_todo} ---- Number of done to dos={" "}
+      {done} ---- Number of to be done to dos= {notDone}
     </div>
   );
 }
 export default function MyApp() {
+  let storedtodo = JSON.parse(localStorage.getItem("todo"));
+
   return (
     <div>
       <div className="componant">
@@ -181,15 +182,12 @@ export default function MyApp() {
       <hr></hr>
 
       <div>
-        {" "}
-        <SearchBar />
+        <Tasks displaytodo={storedtodo} />
       </div>
+
+    
       <hr></hr>
-      <div >    <Tasks /></div>
-  
-      {/* {searching : <SearchTasks/> ?<Tasks/> }  */}
-      <hr></hr>
-<Footer></Footer>
+      <Footer></Footer>
     </div>
   );
 }
