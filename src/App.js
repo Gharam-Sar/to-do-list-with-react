@@ -5,6 +5,7 @@ let todo = [];
 let s = [];
 let searchtask = [];
 let searching = false;
+
 if (localStorage.length === 0) {
   localStorage.setItem("ids", 0);
 
@@ -14,7 +15,7 @@ window.onload = (event) => {
   MyApp();
 };
 
-function ToDo({ todo }) {
+function ToDo({ todo, filterText, toggle }) {
   return (
     <div className="myDiv" key={todo.id}>
       <h2>Task number: {todo.id}</h2>
@@ -66,10 +67,10 @@ function ToDo({ todo }) {
     </div>
   );
 }
-function Tasks({ displaytodo }) {
+function ToDoSpace({ displaytodo }) {
   const [filterText, setFilterText] = useState("");
   const [toggle, settoggle] = useState(false);
-  if (toggle) displaytodo = [];
+
   return (
     <div>
       <SearchBar
@@ -79,6 +80,30 @@ function Tasks({ displaytodo }) {
         ontoggleChange={settoggle}
       />
 
+      <Tasks
+        displaytodo={displaytodo}
+        filterText={filterText}
+        toggle={toggle}
+      />
+    </div>
+  );
+}
+function Tasks({ displaytodo, filterText, toggle }) {
+  if (toggle) displaytodo = [];
+  const searchQuery = filterText.toLowerCase();
+  searchtask = [];
+  for (let j = 0; j < displaytodo.length; j++) {
+    let str = displaytodo[j];
+    let t = str.task;
+
+    if (t.includes(searchQuery)) {
+      console.log(t);
+      searchtask.push(str);
+    }
+  }
+  displaytodo = searchtask.slice(0);
+  return (
+    <div>
       <div className="tasks">
         {displaytodo.map((todo) => {
           return <ToDo todo={todo} />;
@@ -93,7 +118,6 @@ function AddTask() {
   const storedtodo = JSON.parse(localStorage.getItem("todo"));
   todo = storedtodo.slice(0);
   const add_task = (event) => {
-    console.log("should dd");
     let new_id = parseInt(localStorage.getItem("ids")) + 1;
     todo.push({ id: new_id, task: newtask, done: false });
     localStorage.setItem("todo", JSON.stringify(todo));
@@ -137,7 +161,9 @@ function SearchBar({ filterText, toggle, onFilterTextChange, ontoggleChange }) {
     <div>
       <div className="componant" aria-roledescription="search">
         <input
-          onChange={(e) => onFilterTextChange(e.target.value)}
+          onChange={(e) => {
+            onFilterTextChange(e.target.value);
+          }}
           type="search"
           className="searchBar"
           placeholder="Search for a task"
@@ -175,17 +201,19 @@ export default function MyApp() {
 
   return (
     <div>
+      <div className="title">
+        <h1>To Do List</h1>
+      </div>
       <div className="componant">
-        {" "}
+      
         <AddTask />
       </div>
       <hr></hr>
 
       <div>
-        <Tasks displaytodo={storedtodo} />
+        <ToDoSpace displaytodo={storedtodo} />
       </div>
 
-    
       <hr></hr>
       <Footer></Footer>
     </div>
